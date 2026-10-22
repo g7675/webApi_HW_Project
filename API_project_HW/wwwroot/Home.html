@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <script src="Home.js" defer></script>
+</head>
+<body>
+    <h1 class="signIn">Login</h1>
+    <input class="signIn" id="UserNameIn" type="text" placeholder="enter Email" />
+    <input class="signIn" id="PasswordIn" type="password" placeholder="enter password" />
+    <button class="signIn" onclick="signIn()">Sign in</button>
+    <button class="signIn"  onclick="exchangeSignUp()">Dont have account?</button>
+
+    <h1 class="signUp" >Create account</h1>
+    <input class="signUp" id="NameUp" type="text" placeholder="Name" />
+    <input class="signUp" id="LastNameUp" type="text" placeholder="Last Name" />
+    <input class="signUp" id="UserNameUp" type="text" placeholder="enter Email"  />
+    <input class="signUp" id="PasswordUp" type="password" placeholder="enter password"  />
+    <button class="signUp" onclick="signUp()">Sign up</button>
+    <button class="signUp" onclick="exchangeSignIn()" >Have account?</button>
+
+</body>
+</html>
