@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using System.IO;
+using System.Text.Json;
+using Zxcvbn;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -49,6 +50,14 @@ namespace API_project_HW.Controllers
             string userJson = JsonSerializer.Serialize(user);
             System.IO.File.AppendAllText(filePath, userJson + Environment.NewLine);
             return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+        }
+
+        // POST api/<UsersController>
+        [HttpPost ("passwordCheck")]
+        public IActionResult Post([FromBody] string password)
+        {
+            int result = Zxcvbn.Core.EvaluatePassword(password).Score;
+            return Ok(result);
         }
 
         [HttpPost ("Login")]

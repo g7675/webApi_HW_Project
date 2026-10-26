@@ -1,4 +1,5 @@
-﻿async function exchangeSignUp(){
+﻿document.querySelector("#passProgress").style.display = 'none'
+async function exchangeSignUp() {
     const signUps = document.querySelectorAll(".signUp")
     const signIns = document.querySelectorAll(".signIn")
     signIns.forEach(s => s.style.display = "none")
@@ -13,6 +14,29 @@ async function exchangeSignIn(){
 
 }
 
+async function checkPassword() {
+    try {
+        const responsePost = await fetch("api/user/passwordCheck", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(document.querySelector("#PasswordUp").value)
+        });
+        const responsePostJson = await responsePost.json();
+        if (!responsePost.ok) {
+            throw new Error(`HTTP error! status: ${responsePost.status}  ${responsePost.text} `);
+        }
+        const Rank = responsePostJson
+        document.querySelector("#passProgress").style.display = 'block'
+        alert(Rank)
+        document.querySelector("#passProgress").value = Rank
+        
+    }
+    catch (e) {
+        alert(e)
+    }
+}
 
 exchangeSignIn()
 
