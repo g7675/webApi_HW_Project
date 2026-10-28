@@ -11,9 +11,11 @@ namespace API_project_HW.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        string filePath = "Users.txt";
+        //fix: The path never changes, so it can be readonly
+        readonly string filePath = "Users.txt";
         // GET: api/<UsersController>
         [HttpGet]
+        //Why does it return "ef"? A GET on api/User is expected to return the users from the file
         public string Get()
         {
             return  "ef";
@@ -83,6 +85,7 @@ namespace API_project_HW.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
+        //What should the client get when there is no user with this id? Think about NotFound()
         public void Put(int id, [FromBody] User userToUpdate)
         {
             string textToReplace = string.Empty;
@@ -98,11 +101,17 @@ namespace API_project_HW.Controllers
                     JsonSerializer.Deserialize<User>(currentUserInFile);
 
                     if (user.Id == id)
+                    {
                         textToReplace = currentUserInFile;
+                        //fix: Found- break
+                        break;
+                    }
                 }
             }
             if (textToReplace != string.Empty)
             {
+                //fix: Keep the id, otherwise the updated user is saved without it
+                userToUpdate.Id = id;
                 string text = System.IO.File.ReadAllText(filePath);
                 text = text.Replace(textToReplace,
 
