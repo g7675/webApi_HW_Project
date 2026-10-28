@@ -11,7 +11,8 @@ namespace API_project_HW.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        string filePath = "Users.txt";
+        //fix: The path never changes, so it can be readonly
+        readonly string filePath = "Users.txt";
         // GET: api/<UsersController>
         [HttpGet]
         public string Get()
@@ -83,6 +84,7 @@ namespace API_project_HW.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
+        //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
         public void Put(int id, [FromBody] User userToUpdate)
         {
             string textToReplace = string.Empty;
@@ -98,11 +100,17 @@ namespace API_project_HW.Controllers
                     JsonSerializer.Deserialize<User>(currentUserInFile);
 
                     if (user.Id == id)
+                    {
                         textToReplace = currentUserInFile;
+                        //fix: Found- break
+                        break;
+                    }
                 }
             }
             if (textToReplace != string.Empty)
             {
+                //fix: Keep the id, otherwise the updated user is saved without it
+                userToUpdate.Id = id;
                 string text = System.IO.File.ReadAllText(filePath);
                 text = text.Replace(textToReplace,
 
