@@ -15,7 +15,6 @@ namespace API_project_HW.Controllers
         readonly string filePath = "Users.txt";
         // GET: api/<UsersController>
         [HttpGet]
-        //Why does it return "ef"? A GET on api/User is expected to return the users from the file
         public string Get()
         {
             return  "ef";
@@ -85,7 +84,6 @@ namespace API_project_HW.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        //What should the client get when there is no user with this id? Think about NotFound()
         public void Put(int id, [FromBody] User userToUpdate)
         {
             string textToReplace = string.Empty;
