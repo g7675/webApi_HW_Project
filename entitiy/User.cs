@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_project_HW
+namespace entitiy
 {
     public class User
     {
@@ -15,5 +15,13 @@ namespace API_project_HW
         [Required]
         public int Id { get; set; }
 
+    }
+
+    public class LoginUser
+    {
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        public string Password { get; set; }
     }
 }
