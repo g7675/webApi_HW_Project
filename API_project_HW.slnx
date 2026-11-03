@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="API_project_HW/API_project_HW.csproj" />
+  <Project Path="entitiy/entitiy.csproj" Id="bdda6ba0-e01f-449e-949e-a0d21b10dbfa" />
+  <Project Path="repository/repository.csproj" Id="ccda459a-9f14-46d6-8e1d-c4dfff661f16" />
+  <Project Path="service/service.csproj" Id="c4ba935a-07d6-4f85-a64f-833970991a07" />
 </Solution>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using entitiy;
+using Microsoft.AspNetCore.Mvc;
+using service;
 using System.IO;
 using System.Text.Json;
 using Zxcvbn;
@@ -13,6 +15,8 @@ namespace API_project_HW.Controllers
     {
         //fix: The path never changes, so it can be readonly
         readonly string filePath = "Users.txt";
+        UserService userService = new UserService();
+        
         // GET: api/<UsersController>
         [HttpGet]
         public string Get()
@@ -24,62 +28,33 @@ namespace API_project_HW.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            using (StreamReader reader = System.IO.File.OpenText(filePath))
-
-            {
-                string? currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    User user =
-
-                    JsonSerializer.Deserialize<User>(currentUserInFile);
-
-                    if (user.Id == id)
-                        return Ok(user);
-                }
-            }
-
-            return NoContent();
+            User user = userService.GetUserById(id);
+            if (user == null) return NoContent();
+            return Ok(user);
         }
 
         // POST api/<UsersController>
         [HttpPost]
         public IActionResult Post([FromBody] User user)
         {
-            int numberOfUsers = System.IO.File.ReadLines(filePath).Count();
-            user.Id = numberOfUsers + 1;
-            string userJson = JsonSerializer.Serialize(user);
-            System.IO.File.AppendAllText(filePath, userJson + Environment.NewLine);
-            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            User added = userService.AddUser(user);
+            if (added == null) return BadRequest();
+            return Ok(added);
         }
 
         // POST api/<UsersController>
         [HttpPost ("passwordCheck")]
         public IActionResult Post([FromBody] string password)
         {
-            int result = Zxcvbn.Core.EvaluatePassword(password).Score;
-            return Ok(result);
+            return Ok(userService.CheckPasswordStrength(password));
         }
 
         [HttpPost ("Login")]
         public IActionResult Post([FromBody] LoginUser loginUser)
         {
-            using (StreamReader reader = System.IO.File.OpenText(filePath))
-
-            {
-                string? currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    User user =
-
-                    JsonSerializer.Deserialize<User>(currentUserInFile);
-
-                    if (user.UserName == loginUser.UserName && user.Password ==loginUser.Password)
-
-                        return Ok(user);
-                }
-            }
-            return NoContent();
+            User user = userService.Login(loginUser);
+            if(user== null) return NoContent();
+            return Ok(user);
         }
 
         // PUT api/<UsersController>/5
@@ -87,37 +62,7 @@ namespace API_project_HW.Controllers
         //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
         public void Put(int id, [FromBody] User userToUpdate)
         {
-            string textToReplace = string.Empty;
-            using (StreamReader reader =
-            System.IO.File.OpenText(filePath))
-
-            {
-                string currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    User user =
-
-                    JsonSerializer.Deserialize<User>(currentUserInFile);
-
-                    if (user.Id == id)
-                    {
-                        textToReplace = currentUserInFile;
-                        //fix: Found- break
-                        break;
-                    }
-                }
-            }
-            if (textToReplace != string.Empty)
-            {
-                //fix: Keep the id, otherwise the updated user is saved without it
-                userToUpdate.Id = id;
-                string text = System.IO.File.ReadAllText(filePath);
-                text = text.Replace(textToReplace,
-
-                JsonSerializer.Serialize(userToUpdate));
-
-                System.IO.File.WriteAllText(filePath, text);
-            }
+            userService.UserUpdate(id, userToUpdate);
         }
 
         // DELETE api/<UsersController>/5
