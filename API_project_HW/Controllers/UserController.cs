@@ -13,6 +13,8 @@ namespace API_project_HW.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        //fix: The path never changes, so it can be readonly
+        readonly string filePath = "Users.txt";
         UserService userService = new UserService();
         
         // GET: api/<UsersController>
@@ -57,6 +59,7 @@ namespace API_project_HW.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
+        //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
         public void Put(int id, [FromBody] User userToUpdate)
         {
             userService.UserUpdate(id, userToUpdate);
