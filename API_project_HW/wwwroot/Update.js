@@ -17,11 +17,11 @@ async function Update() {
         Name: Nameud || sessionStorage.getItem("currentUser").Name,
         LastName: LastNameud || sessionStorage.getItem("currentUser").LastName,
         Password: Passwordud || sessionStorage.getItem("currentUser").Password,
-        Id: JSON.parse(sessionStorage.getItem("currentUser")).id
+        Id: JSON.parse(sessionStorage.getItem("currentUser")).Id
     }
         
     try {
-        const responsePost = await fetch(`api/user/${JSON.parse(sessionStorage.getItem("currentUser")).id}`, {
+        const responsePost = await fetch(`api/user/${JSON.parse(sessionStorage.getItem("currentUser")).Id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -6,6 +6,11 @@ namespace service
     public class UserService
     {
         UserRepository repository = new UserRepository();
+
+        public List<User> GetAllUsers()
+        {
+            return repository.GetAllUsersFromDB();
+        }
         public User GetUserById(int id)
         {
             return repository.GetUserById(id);
@@ -24,6 +29,7 @@ namespace service
         public User Login(LoginUser loginUser)
         {
             User user = repository.GetUserByName(loginUser.UserName);
+            if (user == null) return null;
             if(user.Password == loginUser.Password)
             {
                 return user;

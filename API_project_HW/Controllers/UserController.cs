@@ -19,9 +19,12 @@ namespace API_project_HW.Controllers
         
         // GET: api/<UsersController>
         [HttpGet]
-        public string Get()
+        public IActionResult Get()
         {
-            return  "ef";
+            List<User> users = new List<User>();
+            users = userService.GetAllUsers();
+            if (users == null) return NoContent();
+            return Ok(users);
         }
 
         // GET api/<UsersController>/5
@@ -29,7 +32,7 @@ namespace API_project_HW.Controllers
         public IActionResult Get(int id)
         {
             User user = userService.GetUserById(id);
-            if (user == null) return NoContent();
+            if (user == null) return NotFound();
             return Ok(user);
         }
 
@@ -53,16 +56,17 @@ namespace API_project_HW.Controllers
         public IActionResult Post([FromBody] LoginUser loginUser)
         {
             User user = userService.Login(loginUser);
-            if(user== null) return NoContent();
+            if(user== null) return NotFound();
             return Ok(user);
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
         //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
-        public void Put(int id, [FromBody] User userToUpdate)
+        public IActionResult Put(int id, [FromBody] User userToUpdate)
         {
             userService.UserUpdate(id, userToUpdate);
+            return Ok();
         }
 
         // DELETE api/<UsersController>/5
