@@ -4,28 +4,9 @@ using System.Text.Json;
 
 namespace repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        private string filePath = "..\\repository\\Users.txt";
-
-        public List<User> GetAllUsersFromDB()
-        {
-            List<User> allUsers = new List<User>();
-            using (StreamReader reader = System.IO.File.OpenText(filePath))
-
-            {
-                string? currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    User user =
-
-                    JsonSerializer.Deserialize<User>(currentUserInFile);
-
-                    allUsers.Add(user);
-                }
-            }
-            return allUsers;
-        }
+        private string filePath = "../repository/Users.txt";
         public User AddUser(User user)
         {
             int numberOfUsers = System.IO.File.ReadLines(filePath).Count();
@@ -85,13 +66,10 @@ namespace repository
                 string currentUserInFile;
                 while ((currentUserInFile = reader.ReadLine()) != null)
                 {
-                    User user =JsonSerializer.Deserialize<User>(currentUserInFile);
+                    User user = JsonSerializer.Deserialize<User>(currentUserInFile);
 
                     if (user.Id == id)
-                    {
                         textToReplace = currentUserInFile;
-                        break;
-                    }
                 }
             }
             if (textToReplace != string.Empty)
@@ -105,5 +83,5 @@ namespace repository
             }
         }
     }
-    }
 
+}

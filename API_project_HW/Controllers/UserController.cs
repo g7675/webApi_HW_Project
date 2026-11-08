@@ -13,18 +13,18 @@ namespace API_project_HW.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //fix: The path never changes, so it can be readonly
-        readonly string filePath = "Users.txt";
-        UserService userService = new UserService();
-        
+        IUserService userService;
+
+        public UserController(IUserService userService)
+        {
+            this.userService = userService;
+        }
+
         // GET: api/<UsersController>
         [HttpGet]
-        public IActionResult Get()
+        public string Get()
         {
-            List<User> users = new List<User>();
-            users = userService.GetAllUsers();
-            if (users == null) return NoContent();
-            return Ok(users);
+            return  "ef";
         }
 
         // GET api/<UsersController>/5
@@ -32,7 +32,7 @@ namespace API_project_HW.Controllers
         public IActionResult Get(int id)
         {
             User user = userService.GetUserById(id);
-            if (user == null) return NotFound();
+            if (user == null) return NoContent();
             return Ok(user);
         }
 
@@ -41,7 +41,7 @@ namespace API_project_HW.Controllers
         public IActionResult Post([FromBody] User user)
         {
             User added = userService.AddUser(user);
-            if (added == null) return BadRequest();
+            if (added == null) return Ok("couldnt be added");
             return Ok(added);
         }
 
@@ -56,17 +56,17 @@ namespace API_project_HW.Controllers
         public IActionResult Post([FromBody] LoginUser loginUser)
         {
             User user = userService.Login(loginUser);
-            if(user== null) return NotFound();
+            if(user== null) return NoContent();
             return Ok(user);
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
         public IActionResult Put(int id, [FromBody] User userToUpdate)
         {
-            userService.UserUpdate(id, userToUpdate);
-            return Ok();
+            bool suc= userService.UserUpdate(id, userToUpdate);
+            if (suc) return NoContent();
+            return BadRequest();
         }
 
         // DELETE api/<UsersController>/5

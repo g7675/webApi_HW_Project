@@ -11,17 +11,18 @@ async function Update() {
     const UserNameud = document.querySelector("#UserNameud").value
     const LastNameud = document.querySelector("#LastNameud").value
     const Passwordud = document.querySelector("#Passwordud").value
-    alert(9999)
+    if (checkPassword(Passwordud || sessionStorage.getItem("currentUser").Password) < 3) { alert("wick password") }
+    else {
     const user = {
         UserName: UserNameud || sessionStorage.getItem("currentUser").UserName,
         Name: Nameud || sessionStorage.getItem("currentUser").Name,
         LastName: LastNameud || sessionStorage.getItem("currentUser").LastName,
         Password: Passwordud || sessionStorage.getItem("currentUser").Password,
-        Id: JSON.parse(sessionStorage.getItem("currentUser")).Id
+        Id: JSON.parse(sessionStorage.getItem("currentUser")).id
     }
         
     try {
-        const responsePost = await fetch(`api/user/${JSON.parse(sessionStorage.getItem("currentUser")).Id}`, {
+        const responsePost = await fetch(`api/user/${JSON.parse(sessionStorage.getItem("currentUser")).id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

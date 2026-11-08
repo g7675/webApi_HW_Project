@@ -3,14 +3,14 @@ using repository;
 
 namespace service
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        UserRepository repository = new UserRepository();
-
-        public List<User> GetAllUsers()
+        private readonly IUserRepository repository;
+        public UserService(IUserRepository repositor)
         {
-            return repository.GetAllUsersFromDB();
+            repository = repositor;
         }
+        
         public User GetUserById(int id)
         {
             return repository.GetUserById(id);
@@ -18,29 +18,38 @@ namespace service
 
         public User AddUser(User user)
         {
+            if (!ValidUser(user)) return null;
             return repository.AddUser(user);
         }
 
-        public void UserUpdate(int id , User user)
+        public bool UserUpdate(int id, User user)
         {
+            if (!ValidUser(user)) return false;
             repository.UpdateUser(id, user);
+            return true;
         }
 
         public User Login(LoginUser loginUser)
         {
             User user = repository.GetUserByName(loginUser.UserName);
-            if (user == null) return null;
-            if(user.Password == loginUser.Password)
+            if (user.Password == loginUser.Password)
             {
                 return user;
             }
             return null;
         }
 
-        public int CheckPasswordStrength(string password) 
+        public int CheckPasswordStrength(string password)
         {
             int result = Zxcvbn.Core.EvaluatePassword(password).Score;
             return result;
+        }
+
+        private bool ValidUser(User user)
+        {
+            if (!(user.Name != null && user.Password != null && user.LastName != null && user.UserName != null)) return false;
+            if (CheckPasswordStrength(user.Password) < 3) return false;
+            return true;
         }
     }
 }
