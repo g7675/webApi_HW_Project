@@ -1,9 +1,7 @@
 ﻿using entitiy;
 using Microsoft.AspNetCore.Mvc;
 using service;
-using System.IO;
-using System.Text.Json;
-using Zxcvbn;
+//fix: Removed the unused usings (System.IO, System.Text.Json, Zxcvbn), which this controller does not use
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,6 +62,7 @@ namespace API_project_HW.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] User userToUpdate)
         {
+            //In C#, avoid abbreviations in names: 'suc' could be 'success'
             bool suc= userService.UserUpdate(id, userToUpdate);
             if (suc) return NoContent();
             return BadRequest();
