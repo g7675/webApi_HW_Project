@@ -4,6 +4,7 @@ document.querySelector("#LastNameud").value = JSON.parse(sessionStorage.getItem(
 document.querySelector("#Passwordud").value = JSON.parse(sessionStorage.getItem("currentUser")).password
 
 
+//In JavaScript, function names are camelCase: update
 async function Update() { 
     
 
