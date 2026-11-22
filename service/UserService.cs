@@ -32,6 +32,7 @@ namespace service
         public User Login(LoginUser loginUser)
         {
             User user = repository.GetUserByName(loginUser.UserName);
+            //What happens when no user has this UserName? GetUserByName returns null, and the next line would crash
             if (user.Password == loginUser.Password)
             {
                 return user;

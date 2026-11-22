@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using service;
 using System.IO;
 using System.Text.Json;
+//This using isn't used in this file: you can remove it
 using Zxcvbn;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -41,6 +42,7 @@ namespace API_project_HW.Controllers
         public IActionResult Post([FromBody] User user)
         {
             User added = userService.AddUser(user);
+            //Why does this return 200 when the password is weak? The assignment asks for 400 (BadRequest) here
             if (added == null) return Ok("couldnt be added");
             return Ok(added);
         }

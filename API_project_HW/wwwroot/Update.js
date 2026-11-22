@@ -4,6 +4,7 @@ document.querySelector("#LastNameud").value = JSON.parse(sessionStorage.getItem(
 document.querySelector("#Passwordud").value = JSON.parse(sessionStorage.getItem("currentUser")).password
 
 
+//In JavaScript, function names are written in camelCase: update
 async function Update() { 
     
 
@@ -11,6 +12,7 @@ async function Update() {
     const UserNameud = document.querySelector("#UserNameud").value
     const LastNameud = document.querySelector("#LastNameud").value
     const Passwordud = document.querySelector("#Passwordud").value
+    //checkPassword is defined in Home.js, which Update.html doesn't load: where should the password score come from?
     if (checkPassword(Passwordud || sessionStorage.getItem("currentUser").Password) < 3) { alert("wick password") }
     else {
     const user = {
